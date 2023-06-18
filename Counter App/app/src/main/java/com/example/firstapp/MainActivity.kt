@@ -16,10 +16,15 @@ class MainActivity : AppCompatActivity() {
         var textview = findViewById<TextView>(R.id.textView)
         btn.setOnClickListener (object: View.OnClickListener{
             override fun onClick(view: View?) {
-                Toast.makeText(this@MainActivity," HEllo CLikcked",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity," HEllo CLikcked",Toast.LENGTH_SHORT).show()
                 textview.text = ""+increaseCounter()
             }
         } )
+        var reset = findViewById<Button>(R.id.reset)
+        reset.setOnClickListener {
+            textview.text="0"
+            counterVal = 0
+        }
     }
     fun increaseCounter(): Int {
         return ++counterVal
