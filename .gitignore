@@ -1,0 +1,5 @@
+
+*.gradle
+DeleteAfterUse/.idea/deploymentTargetDropDown.xml
+DeleteAfterUse/.idea/gradle.xml
+*.xml
