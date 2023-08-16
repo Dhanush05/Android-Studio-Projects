@@ -9,6 +9,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var addition: Button
     lateinit var subtraction:Button
     lateinit var multi: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -17,6 +18,17 @@ class MainActivity : AppCompatActivity() {
         multi = findViewById(R.id.buttonMulti)
         addition.setOnClickListener {
             val intent = Intent(this@MainActivity,GameActivity::class.java)
+            intent.putExtra("choice","addition")
+            startActivity(intent)
+        }
+        subtraction.setOnClickListener {
+            val intent = Intent(this@MainActivity,GameActivity::class.java)
+            intent.putExtra("choice","subtraction")
+            startActivity(intent)
+        }
+        multi.setOnClickListener {
+            val intent = Intent(this@MainActivity,GameActivity::class.java)
+            intent.putExtra("choice","multiplication")
             startActivity(intent)
         }
 
