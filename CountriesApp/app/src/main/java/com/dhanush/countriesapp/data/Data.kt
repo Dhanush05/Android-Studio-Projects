@@ -1,3 +1,3 @@
 package com.dhanush.countriesapp.data
 
-data class Data(val countryName: String?)
+data class Country(val countryName: String?)
