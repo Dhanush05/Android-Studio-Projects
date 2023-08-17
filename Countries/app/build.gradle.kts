@@ -6,6 +6,9 @@ plugins {
 android {
     namespace = "com.dhanush.countries"
     compileSdk = 33
+    buildFeatures{
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.dhanush.countries"
@@ -52,6 +55,7 @@ dependencies {
     implementation("com.google.dagger:dagger:2.38.1") // Dagger core library
     implementation("com.google.dagger:dagger-android:2.38.1") // Dagger Android support
     implementation("com.google.dagger:dagger-android-support:2.38.1") // Dagger Android support for fragments and activities
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     annotationProcessor("com.google.dagger:dagger-compiler:2.38.1") // Dagger annotation processor
     annotationProcessor("com.google.dagger:dagger-android-processor:2.38.1") // Dagger Android processor
 
