@@ -1,8 +1,7 @@
-package com.dhanush.countriesapp.view
+package com.dhanush.countriesapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dhanush.countriesapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
