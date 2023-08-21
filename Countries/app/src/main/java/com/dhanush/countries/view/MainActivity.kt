@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dhanush.countries.R
 import com.dhanush.countries.databinding.ActivityMainBinding
 import com.dhanush.countries.viewmodel.ListViewModel
@@ -19,11 +20,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
+        viewModel = ViewModelProvider(this)[ListViewModel::class.java]
         viewModel.refresh()
         binding.countriesList.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = countriesAdapter
+        }
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.swipeRefresh.isRefreshing = false
+            viewModel.refresh()
         }
         observeViewModel()
     }

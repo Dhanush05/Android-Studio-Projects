@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+//    kotlin("kapt")
+//    kotlin("android")
 }
 
 android {
@@ -30,17 +33,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -52,24 +56,28 @@ dependencies {
     implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
 
-    implementation("com.google.dagger:dagger:2.38.1") // Dagger core library
-    implementation("com.google.dagger:dagger-android:2.38.1") // Dagger Android support
-    implementation("com.google.dagger:dagger-android-support:2.38.1") // Dagger Android support for fragments and activities
+    implementation("com.google.dagger:dagger:2.47") // Dagger core library
+//    annotationProcessor("com.google.dagger:dagger-compiler:2.38.1") // Dagger annotation processor
+    kapt("com.google.dagger:dagger-compiler:2.47")
+
+    implementation("com.google.dagger:dagger-android:2.47") // Dagger Android support
+    implementation("com.google.dagger:dagger-android-support:2.47") // Dagger Android support for fragments and activities
+    kapt("com.google.dagger:dagger-android-processor:2.47") // Dagger Android processor
+
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    annotationProcessor("com.google.dagger:dagger-compiler:2.38.1") // Dagger annotation processor
-    annotationProcessor("com.google.dagger:dagger-android-processor:2.38.1") // Dagger Android processor
 
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
-    implementation("com.github.bumptech.glide:glide:4.12.0") // Glide dependency
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0") // Glide annotation processor
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
+
+    implementation("com.github.bumptech.glide:glide:4.16.0") // Glide dependency
+    kapt("com.github.bumptech.glide:compiler:4.16.0") // Glide annotation processor
 
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0") // Lifecycle Extensions dependency
 
 
     testImplementation("junit:junit:4.13.2")
 
-    testImplementation("org.mockito:mockito-inline:3.12.4") // Mockito Inline testing dependency
+    testImplementation("org.mockito:mockito-inline:5.2.0") // Mockito Inline testing dependency
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
