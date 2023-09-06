@@ -1,4 +1,4 @@
-package com.dhanush.twitterclone.viewmodel
+package com.dhanush.twitterclone.view.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

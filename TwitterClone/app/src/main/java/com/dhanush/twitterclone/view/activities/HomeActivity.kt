@@ -5,14 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.dhanush.twitterclone.R
 import com.dhanush.twitterclone.databinding.ActivityHomeBinding
 import com.dhanush.twitterclone.model.DATA_USERS
 import com.dhanush.twitterclone.model.User
 import com.dhanush.twitterclone.model.loadUrl
-import com.dhanush.twitterclone.viewmodel.SectionsPageAdapter
+import com.dhanush.twitterclone.view.adapters.SectionsPageAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
