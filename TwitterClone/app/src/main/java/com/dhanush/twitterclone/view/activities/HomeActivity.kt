@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.viewpager2.widget.ViewPager2
 import com.dhanush.twitterclone.R
 import com.dhanush.twitterclone.databinding.ActivityHomeBinding
@@ -12,6 +13,8 @@ import com.dhanush.twitterclone.model.DATA_USERS
 import com.dhanush.twitterclone.model.User
 import com.dhanush.twitterclone.model.loadUrl
 import com.dhanush.twitterclone.view.adapters.SectionsPageAdapter
+import com.dhanush.twitterclone.view.fragments.SearchFragment
+import com.dhanush.twitterclone.view.listeners.SearchListener
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -55,6 +58,17 @@ class HomeActivity : AppCompatActivity() {
         binding.fab.setOnClickListener{
             startActivity(TweetActivity.newIntent(this,userID,user?.username))
         }
+        binding.search.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_DONE|| actionId ==EditorInfo.IME_ACTION_SEARCH){
+                val fragment = supportFragmentManager.findFragmentByTag("SearchFragment") as SearchFragment?
+                if(fragment!=null){
+                    fragment.newHashTag("hashtag")
+                }
+//                SearchFragment().newHashTag("#hashtag")
+            }
+            true
+        }
+
     }
 
     private fun populateLogo(){
@@ -89,4 +103,6 @@ class HomeActivity : AppCompatActivity() {
     companion object{
         fun newIntent(context: Context)= Intent(context, HomeActivity::class.java)
     }
+
+
 }

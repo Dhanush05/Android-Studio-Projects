@@ -37,13 +37,6 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>): Recycl
     }
     class TweetViewHolder(v: View): RecyclerView.ViewHolder(v){
         private var binding = ItemTweetBinding.bind(v)
-
-        private val layout = v.findViewById<ViewGroup>(R.id.tweetLayout)
-        private val username = v.findViewById<TextView>(R.id.tweetusername)
-        private val text = v.findViewById<TextView>(R.id.tweetText)
-        private val image = v.findViewById<ImageView>(R.id.tweetImage)
-        private val date = v.findViewById<TextView>(R.id.tweetDate)
-
         fun bind(userId: String, tweet: Tweet, listener: TweetListener?){
             binding.tweetusername.text = tweet.username
             binding.tweetText.text = tweet.text
