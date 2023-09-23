@@ -15,5 +15,6 @@ class SectionsPageAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
             1-> SearchFragment()
             else -> ActivityFragment()
         }
+
     }
 }

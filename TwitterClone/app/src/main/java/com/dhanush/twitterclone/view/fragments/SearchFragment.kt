@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +19,12 @@ import com.dhanush.twitterclone.model.Tweet
 import com.dhanush.twitterclone.model.User
 import com.dhanush.twitterclone.view.adapters.TweetListAdapter
 import com.dhanush.twitterclone.view.listeners.TweetListener
+import com.dhanush.twitterclone.viewmodel.SearchViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchFragment : TwitterFragment() {
+    private lateinit var viewModel : SearchViewModel
 
     private var currentHashtag = ""
     private lateinit var binding: FragmentSearchBinding
@@ -41,6 +44,7 @@ class SearchFragment : TwitterFragment() {
         Toast.makeText(activity,"View Created",Toast.LENGTH_SHORT).show()
         tweetList = binding.tweetList
         followHashtag = binding.followHashtag
+        viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
 
         // Inflate the layout for this fragment
         return binding.root
@@ -60,23 +64,33 @@ class SearchFragment : TwitterFragment() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.swipeRefresh.isRefreshing = false
             updateList()
-            Toast.makeText(activity,"Cuurent: "+currentHashtag,Toast.LENGTH_SHORT).show()
+
         }
-        newHashTag(currentHashtag)
+//        viewModel.setHashTag("term")
+//        currentHashtag = viewModel.hashtagString.value.toString()
+//        newHashTag(currentHashtag)
+        viewModel.hashtagString.observe(viewLifecycleOwner) { term ->
+            currentHashtag = term
+            Toast.makeText(activity,"change in viewmodel found", Toast.LENGTH_SHORT).show()
+            newHashTag()
+        }
+
     }
 
-    fun newHashTag(term: String) {
-        currentHashtag = term
+    fun newHashTag() {
 //        Toast.makeText(activity,"hashtag is:"+currentHashtag,Toast.LENGTH_SHORT).show()
         followHashtag.visibility =View.VISIBLE
         updateList()
+
     }
 
     private fun updateList() {
+        currentHashtag = viewModel.hashtagString.value.toString()
+        Toast.makeText(activity,"Cuurent: "+currentHashtag,Toast.LENGTH_SHORT).show()
         tweetList.visibility = View.GONE
         firebaseDB.collection(DATA_TWEETS).whereArrayContains(DATA_TWEET_HASHTAGS,currentHashtag).get()
             .addOnSuccessListener {
-                Toast.makeText(activity,"success",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity,"success",Toast.LENGTH_SHORT).show()
                 tweetList.visibility = View.VISIBLE
                 val tweets = arrayListOf<Tweet>()
                 for(doc in it.documents){

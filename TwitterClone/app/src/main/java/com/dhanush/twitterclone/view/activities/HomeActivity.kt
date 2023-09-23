@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.dhanush.twitterclone.R
 import com.dhanush.twitterclone.databinding.ActivityHomeBinding
@@ -15,6 +17,7 @@ import com.dhanush.twitterclone.model.loadUrl
 import com.dhanush.twitterclone.view.adapters.SectionsPageAdapter
 import com.dhanush.twitterclone.view.fragments.SearchFragment
 import com.dhanush.twitterclone.view.listeners.SearchListener
+import com.dhanush.twitterclone.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,11 +31,12 @@ class HomeActivity : AppCompatActivity() {
     private var userID = firebaseAuth.currentUser?.uid
     private lateinit var binding: ActivityHomeBinding
     var user: User? = null
+    private lateinit var searchViewModel: SearchViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        searchViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         val adapter = SectionsPageAdapter(this)
         binding.viewPagerContainer.adapter = adapter
         binding.viewPagerContainer.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
@@ -45,6 +49,24 @@ class HomeActivity : AppCompatActivity() {
                 if (tab != null) {
                     binding.viewPagerContainer.currentItem = tab.position
                 }
+                when(tab?.position){
+                    0->{
+                        binding.title.visibility = View.VISIBLE
+                        binding.title.text = "Home"
+                        binding.searchBar.visibility = View.GONE
+                    }
+                    1->{
+                        binding.title.visibility = View.GONE
+                        binding.searchBar.visibility = View.VISIBLE
+                    }
+                    2->{
+                        binding.title.visibility = View.VISIBLE
+                        binding.title.text = "My Activity"
+                        binding.searchBar.visibility = View.GONE
+                    }
+
+                }
+
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
@@ -60,15 +82,11 @@ class HomeActivity : AppCompatActivity() {
         }
         binding.search.setOnEditorActionListener { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE|| actionId ==EditorInfo.IME_ACTION_SEARCH){
-                val fragment = supportFragmentManager.findFragmentByTag("SearchFragment") as SearchFragment?
-                if(fragment!=null){
-                    fragment.newHashTag("hashtag")
-                }
-//                SearchFragment().newHashTag("#hashtag")
+                Toast.makeText(this, "Action bar working",Toast.LENGTH_SHORT).show()
+                searchViewModel.hashtagString.value = v?.text.toString()
             }
             true
         }
-
     }
 
     private fun populateLogo(){
@@ -93,7 +111,10 @@ class HomeActivity : AppCompatActivity() {
         if(userID==null){
             startActivity(LoginActivity.newIntent(this))
         }
-        populateLogo()
+        else{
+            populateLogo()
+        }
+
     }
     fun onLogout(v:View){
         firebaseAuth.signOut()
