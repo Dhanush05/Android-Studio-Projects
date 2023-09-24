@@ -9,6 +9,9 @@ import com.dhanush.twitterclone.R
 
 
 class HomeFragment : TwitterFragment() {
+    override fun updateList() {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

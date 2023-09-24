@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,26 +15,23 @@ import com.dhanush.twitterclone.R
 import com.dhanush.twitterclone.databinding.FragmentSearchBinding
 import com.dhanush.twitterclone.model.DATA_TWEETS
 import com.dhanush.twitterclone.model.DATA_TWEET_HASHTAGS
+import com.dhanush.twitterclone.model.DATA_USERS
+import com.dhanush.twitterclone.model.DATA_USERS_HASHTAGS
 import com.dhanush.twitterclone.model.Tweet
 import com.dhanush.twitterclone.model.User
 import com.dhanush.twitterclone.view.adapters.TweetListAdapter
 import com.dhanush.twitterclone.view.listeners.TweetListener
-import com.dhanush.twitterclone.viewmodel.SearchViewModel
+import com.dhanush.twitterclone.viewmodel.SharedViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchFragment : TwitterFragment() {
-    private lateinit var viewModel : SearchViewModel
-
+    private lateinit var viewModel : SharedViewModel
     private var currentHashtag = ""
     private lateinit var binding: FragmentSearchBinding
-    private var tweetsAdapter: TweetListAdapter? = null
-    private var currentUser: User? =null
-    private val firebaseDB = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid
-    private val listener: TweetListener? = null
     private lateinit var followHashtag:ImageView
     private lateinit var tweetList: RecyclerView
+    private var hashtagFollowed = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +41,7 @@ class SearchFragment : TwitterFragment() {
         Toast.makeText(activity,"View Created",Toast.LENGTH_SHORT).show()
         tweetList = binding.tweetList
         followHashtag = binding.followHashtag
-        viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
 
         // Inflate the layout for this fragment
         return binding.root
@@ -64,27 +61,50 @@ class SearchFragment : TwitterFragment() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.swipeRefresh.isRefreshing = false
             updateList()
-
         }
-//        viewModel.setHashTag("term")
-//        currentHashtag = viewModel.hashtagString.value.toString()
-//        newHashTag(currentHashtag)
+
         viewModel.hashtagString.observe(viewLifecycleOwner) { term ->
             currentHashtag = term
             Toast.makeText(activity,"change in viewmodel found", Toast.LENGTH_SHORT).show()
             newHashTag()
         }
+        viewModel.currrentUser.observe(viewLifecycleOwner){
+            currentUser = it
+        }
+        binding.followHashtag.setOnClickListener {
+            val followed = currentUser?.followHashTags
+            binding.followHashtag.isClickable = false
+            hashtagFollowed = currentUser?.followHashTags?.contains(currentHashtag) == true
+            if(hashtagFollowed){
+                followed?.remove(currentHashtag)
+            }
+            else{
+                followed?.add(currentHashtag)
+            }
+            firebaseDB.collection(DATA_USERS).document(userId).update(DATA_USERS_HASHTAGS,followed)
+                .addOnSuccessListener {
+//                    callback?.onUserUpdated()
+                    binding.followHashtag.isClickable = true
+                }
+                .addOnFailureListener {
+                    it.printStackTrace()
+                    binding.followHashtag.isClickable = true
+                }
+            updateFollowDrawable()
+            updateList()
+
+        }
 
     }
 
-    fun newHashTag() {
+    private fun newHashTag() {
 //        Toast.makeText(activity,"hashtag is:"+currentHashtag,Toast.LENGTH_SHORT).show()
         followHashtag.visibility =View.VISIBLE
         updateList()
 
     }
 
-    private fun updateList() {
+    override fun updateList() {
         currentHashtag = viewModel.hashtagString.value.toString()
         Toast.makeText(activity,"Cuurent: "+currentHashtag,Toast.LENGTH_SHORT).show()
         tweetList.visibility = View.GONE
@@ -106,18 +126,21 @@ class SearchFragment : TwitterFragment() {
                 Toast.makeText(activity,"failing",Toast.LENGTH_SHORT).show()
                 it.printStackTrace()
             }
+        updateFollowDrawable()
     }
 
+    private fun updateFollowDrawable() {
 
-//    companion object{
-//        private const val ARG_TEXT = "text"
-//        fun newInstance(text: String): SearchFragment{
-//            val fragment = SearchFragment()
-//            val args =  Bundle()
-//            args.putString(ARG_TEXT,text)
-//            fragment.arguments = args
-//            return fragment
-//        }
-//    }
+        hashtagFollowed = currentUser?.followHashTags?.contains(currentHashtag) == true
+        context?.let {
+            if(hashtagFollowed){
+                followHashtag.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.follow))
+            }
+            else{
+                followHashtag.setImageDrawable(ContextCompat.getDrawable(it, R.drawable.follow_inactive))
+            }
+        }
+    }
+
 
 }
