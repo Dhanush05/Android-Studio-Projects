@@ -9,6 +9,7 @@ import com.dhanush.nyschoolsapp.R
 import com.dhanush.nyschoolsapp.databinding.ActivityMainBinding
 import com.dhanush.nyschoolsapp.model.School
 import com.dhanush.nyschoolsapp.viewmodel.ListViewModel
+import com.dhanush.nyschoolsapp.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -37,10 +38,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.schools.observe(this,{
-            it?.let{
+        viewModel.schools.observe(this) {
+            it?.let {
                 schoolsAdapter.updateSchools(it)
             }
-        })
+        }
     }
 }

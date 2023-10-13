@@ -13,4 +13,8 @@ class SchoolsService {
     fun getSchools(): Single<List<School>> {
         return api.getSchools()
     }
+    fun getSchoolDetails(dbn: String):Single<List<SchoolDetails>>{
+        return api.getSchoolDetails(dbn)
+    }
+
 }
