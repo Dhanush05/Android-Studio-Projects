@@ -9,10 +9,16 @@ data class School (
     val dbn: String?
 )
 
-data class SatScore(
-    val mathScore: String?="",
-    val readingScore: String? ="",
-    val writingScore: String? = ""
-)
-
+data class SchoolDetails(
+    @SerializedName("sat_math_avg_score")
+    val mathScore: String?,
+    @SerializedName("sat_critical_reading_avg_score")
+    val readingScore: String?,
+    @SerializedName("sat_writing_avg_score")
+    val writingScore: String?
+){
+    fun toList(): ArrayList<String?>{
+        return arrayListOf(mathScore,readingScore,writingScore)
+    }
+}
 
