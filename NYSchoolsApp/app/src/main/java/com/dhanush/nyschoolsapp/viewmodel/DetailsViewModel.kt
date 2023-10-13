@@ -15,6 +15,7 @@ open class DetailsViewModel:ViewModel() {
     private val disposable = CompositeDisposable()
     val schooldetails = MutableLiveData<SchoolDetails>()
     val loadError = MutableLiveData<Boolean>()
+    val noData = MutableLiveData<Boolean>()
 
     @Inject
     lateinit var schoolsService: SchoolsService
@@ -28,7 +29,15 @@ open class DetailsViewModel:ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<List<SchoolDetails>>(){
                 override fun onSuccess(t: List<SchoolDetails>) {
-                    schooldetails.value = t.get(0)
+//                    schooldetails.value = t.get(0)
+                    if(t.isNotEmpty()){
+                        schooldetails.value  = t[0]
+                        noData.value = false
+                    }
+                    else{
+                        noData.value  = true
+
+                    }
                 }
 
                 override fun onError(e: Throwable) {
