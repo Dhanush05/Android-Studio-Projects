@@ -5,28 +5,32 @@ import androidx.lifecycle.ViewModel
 import com.dhanush.nyschoolsapp.di.DaggerApiComponent
 import com.dhanush.nyschoolsapp.model.School
 import com.dhanush.nyschoolsapp.model.SchoolsService
+import com.dhanush.nyschoolsapp.repository.SchoolRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ListViewModel: ViewModel() {
+class ListViewModel @Inject constructor(
+    private val schoolRepository: SchoolRepository
+): ViewModel() {
     val schools = MutableLiveData<List<School>>()
     val schoolLoadError = MutableLiveData<Boolean>()
     private val disposable = CompositeDisposable()
     val loading = MutableLiveData<Boolean>()
-    @Inject
-    lateinit var schoolsService: SchoolsService
-    init{
-        DaggerApiComponent.create().inject(this)
-    }
+
+//    @Inject
+//    lateinit var schoolsService: SchoolsService
+//    init{
+//        DaggerApiComponent.create().inject(this)
+//    }
 
     fun refresh(){
         fetchSchools()
     }
     private fun fetchSchools(){
-        disposable.add(schoolsService.getSchools()
+        disposable.add(schoolRepository.getSchools()
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<List<School>>(){

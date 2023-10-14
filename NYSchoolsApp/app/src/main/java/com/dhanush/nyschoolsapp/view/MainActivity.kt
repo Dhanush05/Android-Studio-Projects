@@ -5,21 +5,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dhanush.nyschoolsapp.R
 import com.dhanush.nyschoolsapp.databinding.ActivityMainBinding
+import com.dhanush.nyschoolsapp.di.DaggerApiComponent
 import com.dhanush.nyschoolsapp.model.School
 import com.dhanush.nyschoolsapp.viewmodel.ListViewModel
-import com.dhanush.nyschoolsapp.viewmodel.SharedViewModel
+import com.dhanush.nyschoolsapp.viewmodel.ViewModelFactory
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var schoolsAdapter = SchoolsListAdapter(arrayListOf())
     lateinit var viewModel : ListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding  = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[ListViewModel::class.java]
+        DaggerApiComponent.create().inject(this)
+//        viewModel = ViewModelProvider(this)[ListViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ListViewModel::class.java]
         viewModel.refresh()
         schoolsAdapter.onItemClickListener = object : SchoolsListAdapter.OnItemClickListener {
             override fun onItemClick(school: School) {

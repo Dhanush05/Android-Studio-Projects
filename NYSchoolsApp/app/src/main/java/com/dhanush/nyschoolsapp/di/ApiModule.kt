@@ -2,6 +2,7 @@ package com.dhanush.nyschoolsapp.di
 
 import com.dhanush.nyschoolsapp.model.SchoolsApi
 import com.dhanush.nyschoolsapp.model.SchoolsService
+import com.dhanush.nyschoolsapp.repository.SchoolRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -32,5 +33,9 @@ class ApiModule {
     @Provides
     fun provideSchoolsService(): SchoolsService{
         return SchoolsService()
+    }
+    @Provides
+    fun provideSchoolRepository(schoolsService: SchoolsService):SchoolRepository{
+        return SchoolRepository(schoolsService)
     }
 }
