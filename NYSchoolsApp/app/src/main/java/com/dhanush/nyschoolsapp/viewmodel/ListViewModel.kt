@@ -18,13 +18,6 @@ class ListViewModel @Inject constructor(
     val schools = MutableLiveData<List<School>>()
     val schoolLoadError = MutableLiveData<Boolean>()
     private val disposable = CompositeDisposable()
-    val loading = MutableLiveData<Boolean>()
-
-//    @Inject
-//    lateinit var schoolsService: SchoolsService
-//    init{
-//        DaggerApiComponent.create().inject(this)
-//    }
 
     fun refresh(){
         fetchSchools()

@@ -19,5 +19,3 @@ class ViewModelFactory @Inject constructor(private val repository: SchoolReposit
         }
     }
 }
-//if (modelClass.isAssignableFrom(ListViewModel::class.java)) {
-//            return ListViewModel(repository) as T

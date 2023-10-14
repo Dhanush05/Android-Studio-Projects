@@ -47,7 +47,8 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 //dagger dependencies
-    implementation("com.google.dagger:dagger:2.47") // Dagger core library
+    implementation("com.google.dagger:dagger:2.47")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0-alpha01") // Dagger core library
     kapt("com.google.dagger:dagger-compiler:2.47")
     implementation("com.google.dagger:dagger-android:2.47") // Dagger Android support
     implementation("com.google.dagger:dagger-android-support:2.47") // Dagger Android support for fragments and activities
@@ -60,18 +61,13 @@ dependencies {
     implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
 
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-
     implementation("androidx.recyclerview:recyclerview:1.3.1")
-//glide
-    implementation("com.github.bumptech.glide:glide:4.16.0") // Glide dependency
-    kapt("com.github.bumptech.glide:compiler:4.16.0") // Glide annotation processor
 
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0") // Lifecycle Extensions dependency
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha01")
 }

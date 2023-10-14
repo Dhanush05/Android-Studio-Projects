@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, DetailsActivity::class.java)
                 intent.putExtra("schoolName", school.schoolName)
                 intent.putExtra("schoolDbn", school.dbn)
-                // Add any other data you want to send to the new activity
                 startActivity(intent)
             }
         }

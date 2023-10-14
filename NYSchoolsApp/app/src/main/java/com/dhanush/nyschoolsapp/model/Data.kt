@@ -16,9 +16,4 @@ data class SchoolDetails(
     val readingScore: String?,
     @SerializedName("sat_writing_avg_score")
     val writingScore: String?
-){
-    fun toList(): ArrayList<String?>{
-        return arrayListOf(mathScore,readingScore,writingScore)
-    }
-}
-
+)

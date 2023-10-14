@@ -57,7 +57,7 @@ class DetailsActivity : AppCompatActivity() {
         }
         viewModel.noData.observe(this){
             if(it){
-                Toast.makeText(this@DetailsActivity,"No data available",Toast.LENGTH_LONG).show()
+                Toast.makeText(this@DetailsActivity,"No data available for "+title,Toast.LENGTH_LONG).show()
                 finish()
             }
         }

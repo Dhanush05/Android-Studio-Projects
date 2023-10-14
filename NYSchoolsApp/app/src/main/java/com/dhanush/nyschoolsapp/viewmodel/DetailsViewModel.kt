@@ -20,19 +20,12 @@ open class DetailsViewModel @Inject constructor(
     val loadError = MutableLiveData<Boolean>()
     val noData = MutableLiveData<Boolean>()
 
-//    @Inject
-//    lateinit var schoolsService: SchoolsService
-//    init{
-//        DaggerApiComponent.create().inject(this)
-//    }
-
     fun fetchSchoolDetails(data:String){
         disposable.add(schoolRepository.getSchoolDetails(data)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object: DisposableSingleObserver<List<SchoolDetails>>(){
                 override fun onSuccess(t: List<SchoolDetails>) {
-//                    schooldetails.value = t.get(0)
                     if(t.isNotEmpty()){
                         schooldetails.value  = t[0]
                         noData.value = false

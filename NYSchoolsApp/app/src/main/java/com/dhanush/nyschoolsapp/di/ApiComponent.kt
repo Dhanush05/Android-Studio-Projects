@@ -11,7 +11,6 @@ import dagger.Component
 interface ApiComponent {
     fun inject(service: SchoolsService)
     fun inject(viewModel: ListViewModel)
-
     fun inject(viewModel: DetailsViewModel)
     fun inject(activity: MainActivity)
     fun inject(activity: DetailsActivity)
