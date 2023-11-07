@@ -2,6 +2,7 @@ package com.dhanush.twitterclone.view.activities
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import com.dhanush.twitterclone.R
 import com.dhanush.twitterclone.databinding.ActivityProfileBinding
 import com.dhanush.twitterclone.model.DATA_IMAGES
@@ -49,13 +51,33 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         }
         binding.photoIV.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startForActivityResult.launch(intent)
+            AlertDialog.Builder(this)
+                .setTitle("Choose Image source:")
+                .setItems(arrayOf("Camera","Files")){_,which->
+                    when(which){
+                        0->{
+                            val intent = Intent(Intent.ACTION_CAMERA_BUTTON)
+                            startActivityLoadFromCamera.launch(null)
+                        }
+                        1->{
+                            val intent = Intent(Intent.ACTION_PICK)
+                            intent.type = "image/*"
+                            startActivityPickImageFromFile.launch(intent)
+                        }
+                    }
+                }.show()
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            startForActivityResult.launch(intent)
 
         }
     }
-    private val startForActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result->
+    private val startActivityLoadFromCamera = registerForActivityResult(ActivityResultContracts.TakePicturePreview()){result->
+        if (result is Bitmap){
+            binding.photoIV.setImageBitmap(result)
+        }
+    }
+    private val startActivityPickImageFromFile = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result->
         if(result.resultCode == RESULT_OK ){
             val data: Intent? = result.data
             val imageUri: Uri? = data?.data
