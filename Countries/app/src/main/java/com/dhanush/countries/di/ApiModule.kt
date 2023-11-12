@@ -20,5 +20,4 @@ class ApiModule {
     fun provideCountriesService(): CountriesService{
         return CountriesService()
     }
-
 }
