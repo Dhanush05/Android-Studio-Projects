@@ -1,4 +1,4 @@
-package com.dhanush.runningapp.dao
+package com.dhanush.runningapp.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,13 +6,11 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.dhanush.runningapp.db.Run
 
 @Dao
-interface RunDao {
+interface RunDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRun(run: Run)
-
     @Delete
     suspend fun deleteRun(run: Run)
 
@@ -35,6 +33,6 @@ interface RunDao {
     fun getTotalDistance(): LiveData<Int>
     @Query("SELECT AVG(avgSpeedInKMH) FROM running_table")
     fun getTotalAvgSpeed(): LiveData<Float>
-    
+
 
 }

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -54,8 +55,8 @@ dependencies {
     //Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.0")
     //coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     //coroutines lifecycle scope
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -69,19 +70,26 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     //dagger core
-    implementation("com.google.dagger:dagger:2.47")
-    kapt("com.google.dagger:dagger-compiler:2.47")
+    implementation("com.google.dagger:dagger:2.46")
+    kapt("com.google.dagger:dagger-compiler:2.46")
     //dagger android
-    implementation("com.google.dagger:dagger-android:2.47")
-    implementation("com.google.dagger:dagger-android-support:2.47")
-    kapt("com.google.dagger:dagger-android-processor:2.47")
+    implementation("com.google.dagger:dagger-android:2.46")
+    implementation("com.google.dagger:dagger-android-support:2.46")
+    kapt("com.google.dagger:dagger-android-processor:2.46")
+
+    //dagger hilt
+    implementation("com.google.dagger:hilt-android:2.46")
+    kapt("com.google.dagger:hilt-android-compiler:2.46")
+
+    //activity ktx for viewmodels()
+    implementation("androidx.activity:activity-ktx:1.8.1")
     //easy permissions
     implementation("pub.devrel:easypermissions:3.0.0")
     //timber
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
     //MpAndroidChart
-//    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    //lifecycle extensions - check if needed++++++++
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    //lifecycle extensio  ns - check if needed++++++++
 
 
 
@@ -93,3 +101,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
+//kapt {
+//    correctErrorTypes = true
+//}
