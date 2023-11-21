@@ -8,8 +8,9 @@ plugins {
 android {
     namespace = "com.dhanush.runningapp"
     compileSdk = 34
+
     buildFeatures{
-        dataBinding = true
+        viewBinding = true
     }
     defaultConfig {
         applicationId = "com.dhanush.runningapp"
