@@ -1,5 +1,6 @@
 package com.dhanush.runningapp.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.dhanush.runningapp.R
 import com.dhanush.runningapp.databinding.FragmentTrackingBinding
+import com.dhanush.runningapp.other.constants.ACTION_START_OR_RESUME_SERVICE
+import com.dhanush.runningapp.services.TrackingService
 import com.dhanush.runningapp.ui.viewmodels.MainViewModel
 import com.google.android.gms.maps.GoogleMap
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +39,15 @@ class TrackingFragment : Fragment() {
         binding?.mapView?.getMapAsync {
             map = it
         }
+        binding?.btnToggleRun?.setOnClickListener {
+            sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+        }
     }
+    private fun sendCommandToService(action: String) =
+        Intent(requireActivity(), TrackingService::class.java).also {
+            it.action = action
+            requireActivity().startService(it)
+        }
 
     override fun onResume() {
         super.onResume()
