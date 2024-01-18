@@ -28,10 +28,10 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import timber.log.Timber
 
-class TrackingService: Service() {
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
+class TrackingService: LifecycleService() {
+//    override fun onBind(intent: Intent?): IBinder? {
+//        return null
+//    }
     private val serviceScope = CoroutineScope(Dispatchers.Default+ SupervisorJob())
     var isFirstRun  = true
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
