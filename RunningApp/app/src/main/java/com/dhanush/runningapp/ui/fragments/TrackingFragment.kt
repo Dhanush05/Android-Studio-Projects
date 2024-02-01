@@ -1,6 +1,7 @@
 package com.dhanush.runningapp.ui.fragments
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import com.dhanush.runningapp.services.TrackingService
 import com.dhanush.runningapp.ui.viewmodels.MainViewModel
 import com.google.android.gms.maps.GoogleMap
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.io.Console
 
 @AndroidEntryPoint
 class TrackingFragment : Fragment() {
@@ -23,6 +26,7 @@ class TrackingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("CheckFragment")
     }
 
     override fun onCreateView(
@@ -43,11 +47,17 @@ class TrackingFragment : Fragment() {
             sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
         }
     }
-    private fun sendCommandToService(action: String) =
-        Intent(requireActivity(), TrackingService::class.java).also {
+    private fun sendCommandToService(action: String) {
+        val intent = Intent(requireActivity(), TrackingService::class.java).also {
             it.action = action
             requireActivity().startService(it)
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requireActivity().startForegroundService(intent)
+        } else {
+            requireActivity().startService(intent)
+        }
+    }
 
     override fun onResume() {
         super.onResume()
