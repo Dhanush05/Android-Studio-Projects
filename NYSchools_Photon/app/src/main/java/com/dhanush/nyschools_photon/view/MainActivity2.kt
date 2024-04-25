@@ -45,7 +45,7 @@ class MainActivity2 : ComponentActivity() {
     private val listViewModel: ListViewModel by viewModels{viewModelFactory}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerApiComponent.create().inject(this)
+        //DaggerApiComponent.create().inject(this)
         setContent {
             SchoolListScreen(viewModel = listViewModel)
         }

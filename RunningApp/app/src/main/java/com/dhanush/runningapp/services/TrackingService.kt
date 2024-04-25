@@ -71,6 +71,7 @@ class TrackingService: LifecycleService() {
             ACTION_START_OR_RESUME_SERVICE ->{
                 if(isFirstRun){
                     Toast.makeText(this,"Started or resumed service",Toast.LENGTH_SHORT).show()
+
                     startForegroundService()
                     isFirstRun = false
                 }
@@ -126,6 +127,22 @@ class TrackingService: LifecycleService() {
         )
         notificationManager.createNotificationChannel(channel)
     }
+    val locationCallBack = object: LocationCallback(){
+        override fun onLocationResult(result: LocationResult) {
+            super.onLocationResult(result)
+            if(isTracking.value!!){
+                result?.locations?.let{
+                    for(loc in it){
+                        addPathPoints(loc)
+                        Timber.d("Latitude = " + loc.latitude + ", Longitude = " + loc.longitude)
+                    }
+                }
+            }
+            else{
+                //todo "implement else when tracking is off"
+            }
+        }
+    }
 
     private fun addEmptyPolylines() = pathPoints.value?.apply{
         add(mutableListOf())
@@ -142,24 +159,15 @@ class TrackingService: LifecycleService() {
         }
     }
 
-    val locationCallBack = object: LocationCallback(){
-        override fun onLocationResult(result: LocationResult) {
-            super.onLocationResult(result)
-            if(isTracking.value!!){
-                result?.locations?.let{
-                    for(loc in it){
-                        addPathPoints(loc)
-                        Timber.d("Latitude = " + loc.latitude + ", Longitude = " + loc.longitude)
-                    }
-                }
-            }
-            else{
-                //todo "implement else when tracking is off"
-
-            }
-        }
-
+    private fun addLatestPolyLine(){
+//        if(pathPoints.isNotEmpty()){
+//            //
+//        }
     }
+
+
+
+
 
     //function to update location tracking when switching between isTracking true or false.
     @SuppressLint("MissingPermission")
